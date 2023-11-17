@@ -1,0 +1,8 @@
+//
+// Created by alinm on 11/17/2023.
+//
+
+#ifndef THETICKETINGAPP_LOCATION_H
+#define THETICKETINGAPP_LOCATION_H
+
+#endif //THETICKETINGAPP_LOCATION_H
