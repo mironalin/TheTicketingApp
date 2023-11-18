@@ -16,13 +16,20 @@ private:
     int* zoneCapacities;
 
 public:
-    
+
     // Accessors
     const char* getLocationName() const;
     int getMaxSeats() const;
     int getNumRows() const;
     int getNumZones() const;
     const int* getZoneCapacities() const;
+
+    // Setters with validations
+    void setLocationName(const char* n);
+    void setMaxSeats(int max);
+    void setNumRows(int rows);
+    void setNumZones(int zones);
+    void setZoneCapacities(int* capacities);
 
 };
 

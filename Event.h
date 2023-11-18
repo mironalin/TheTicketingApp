@@ -20,6 +20,11 @@ public:
     const char* getEventDate() const;
     const char* getEventTime() const;
 
+    // Setters with validations
+    void setEventName(const char* name);
+    void setEventDate(const char* date);
+    void setEventTime(const char* time);
+
 };
 
 #endif //THETICKETINGAPP_EVENT_H
