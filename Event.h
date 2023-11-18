@@ -5,4 +5,21 @@
 #ifndef THETICKETINGAPP_EVENT_H
 #define THETICKETINGAPP_EVENT_H
 
+#include <iostream>
+
+class Event {
+private:
+    char* eventName;
+    char* eventDate;
+    char* eventTime;
+
+public:
+
+    // Accessors
+    const char* getEventName() const;
+    const char* getEventDate() const;
+    const char* getEventTime() const;
+
+};
+
 #endif //THETICKETINGAPP_EVENT_H

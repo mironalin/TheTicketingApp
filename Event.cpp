@@ -1,3 +1,18 @@
-//
-// Created by alinm on 11/17/2023.
-//
+#include "Event.h"
+#include <iostream>
+#include <cstring>
+
+// Accessors
+const char* Event::getEventName() const {
+    return eventName;
+}
+
+const char* Event::getEventDate() const {
+    return eventDate;
+}
+
+const char* Event::getEventTime() const {
+    return eventTime;
+}
+
+
