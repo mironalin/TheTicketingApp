@@ -6,11 +6,6 @@ int Ticket::uniqueIdCounter = 1000; // Initialize the static member
 // Default constructor
 Ticket::Ticket() : ticketId(0), ticketType(nullptr) {}
 
-// Accessors
-int Ticket::getTicketId() const {
-    return ticketId;
-}
-
 // Destructor
 Ticket::~Ticket() {
     delete[] ticketType;
@@ -24,6 +19,11 @@ Ticket::Ticket(const Ticket &other) {
 
     // Copy Ticket ID
     ticketId = other.ticketId;
+}
+
+// Accessors
+int Ticket::getTicketId() const {
+    return ticketId;
 }
 
 const char* Ticket::getTicketType() const {

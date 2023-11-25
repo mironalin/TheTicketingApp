@@ -23,10 +23,10 @@ public:
 
     // Copy constructor
     Ticket(const Ticket& other);
+
     // Accessors
     int getTicketId() const;
     const char* getTicketType() const;
-    static int getUniqueIdCounter();
 
     // Other processing methods
     void generateTicketId();
@@ -34,6 +34,9 @@ public:
 
     // Setters with validations
     void setTicketType(const char* type);
+
+    // Public static member function to get uniqueIdCounter value
+    static int getUniqueIdCounter();
 };
 
 #endif //THETICKETINGAPP_TICKET_H

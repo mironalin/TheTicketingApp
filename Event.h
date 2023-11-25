@@ -34,6 +34,8 @@ public:
     void setEventDate(const char* date);
     void setEventTime(const char* time);
 
+    // Display details method
+    void displayEventDetails() const;
 };
 
 #endif //THETICKETINGAPP_EVENT_H

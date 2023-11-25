@@ -40,6 +40,8 @@ public:
     void setNumZones(int zones);
     void setZoneCapacities(int* capacities);
 
+    // Display details method
+    void displayLocationDetails() const;
 };
 
 #endif //THETICKETINGAPP_LOCATION_H

@@ -97,3 +97,11 @@ void Event::setEventTime(const char* time) {
     strcpy(eventTime, time);
 }
 
+// Display details method
+void Event::displayEventDetails() const {
+    std::cout << "\n========== Event details ==========\n";
+    std::cout << "Event Name: " << eventName << "\n";
+    std::cout << "Event Date: " << eventDate << "\n";
+    std::cout << "Event Time: " << eventTime << "\n";
+    std::cout << "========== Event details ==========\n\n";
+}

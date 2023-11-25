@@ -116,4 +116,16 @@ void Location::setZoneCapacities(int* capacities) {
     }
 }
 
-
+// Display details method
+void Location::displayLocationDetails() const {
+    std::cout << "\n========== Location Details ==========\n";
+    std::cout << "Location Name: " << name << "\n";
+    std::cout << "Maximum seats: " << maxSeats << "\n";
+    std::cout << "Number of rows: " << numRows << "\n";
+    std::cout << "Number of zones: " << numZones << "\n";
+    std::cout << "Zone Capacities: ";
+    for(int i = 0; i < numZones; ++i) {
+        std::cout << zoneCapacities[i] << " ";
+    }
+    std::cout << "\n========== Location Details ==========\n\n";
+}
