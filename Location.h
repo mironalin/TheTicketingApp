@@ -20,6 +20,9 @@ public:
     Location();
     Location(const char* n, int max, int rows, int zones, int* capacities);
 
+    // Destructor
+    ~Location();
+
     // Accessors
     const char* getLocationName() const;
     int getMaxSeats() const;

@@ -11,6 +11,12 @@ int Ticket::getTicketId() const {
     return ticketId;
 }
 
+// Destructor
+Ticket::~Ticket() {
+    delete[] ticketType;
+}
+
+
 const char* Ticket::getTicketType() const {
     return ticketType;
 }

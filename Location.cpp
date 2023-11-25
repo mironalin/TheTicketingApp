@@ -18,6 +18,12 @@ Location::Location(const char* n, int max, int rows, int zones, int* capacities)
     }
 }
 
+// Destructor
+Location::~Location() {
+    delete[] name;
+    delete[] zoneCapacities;
+}
+
 // Accessors
 const char* Location::getLocationName() const {
     return name;

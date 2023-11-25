@@ -18,6 +18,13 @@ Event::Event(const char* name, const char* date, const char* time) {
     strcpy(eventTime, time);
 }
 
+// Destructor
+Event::~Event() {
+    delete[] eventName;
+    delete[] eventDate;
+    delete[] eventTime;
+}
+
 // Accessors
 const char* Event::getEventName() const {
     return eventName;

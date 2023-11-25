@@ -18,6 +18,9 @@ public:
     Event();
     Event(const char* name, const char* date, const char* time);
 
+    // Destructor
+    ~Event();
+
     // Accessors
     const char* getEventName() const;
     const char* getEventDate() const;

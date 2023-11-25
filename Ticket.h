@@ -18,6 +18,9 @@ public:
     Ticket();
     Ticket(const char* type);
 
+    // Destructor
+    ~Ticket();
+
     // Accessors
     int getTicketId() const;
     const char* getTicketType() const;
