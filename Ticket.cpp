@@ -66,7 +66,7 @@ void Ticket::displayTicketDetails() const {
     std::cout << "\n========== Ticket Details ==========\n";
     std::cout << "Ticket Type: " << (ticketType ? ticketType : "N/A") << "\n";
     std::cout << "Unique ID: " << ticketId << "\n";
-    std::cout << "========== Ticket Details ==========\n\n";
+    std::cout << "========== Ticket Details ==========\n";
 }
 
 // Setters with validations
