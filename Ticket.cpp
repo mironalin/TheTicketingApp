@@ -6,6 +6,16 @@ int Ticket::uniqueIdCounter = 1000; // Initialize the static member
 // Default constructor
 Ticket::Ticket() : ticketId(0), ticketType(nullptr) {}
 
+// Parameterized constructor
+Ticket::Ticket(const char* type) {
+    // Allocate memory for ticketType and copy the input string
+    ticketType = new char[strlen(type) + 1];
+    strcpy(ticketType, type);
+
+    // Generate a unique ticket ID
+    generateTicketId();
+}
+
 // Destructor
 Ticket::~Ticket() {
     delete[] ticketType;
@@ -53,8 +63,10 @@ void Ticket::generateTicketId() {
 }
 
 void Ticket::displayTicketDetails() const {
-    std::cout << "Ticket ID: " << ticketId << "\n";
-    std::cout << "Ticket Type: " << ticketType << "\n";
+    std::cout << "\n========== Ticket Details ==========\n";
+    std::cout << "Ticket Type: " << (ticketType ? ticketType : "N/A") << "\n";
+    std::cout << "Unique ID: " << ticketId << "\n";
+    std::cout << "========== Ticket Details ==========\n\n";
 }
 
 // Setters with validations
