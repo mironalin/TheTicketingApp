@@ -165,7 +165,7 @@ std::ostream& operator<<(std::ostream& os, const Location& location) {
 }
 
 std::istream& operator>>(std::istream& is, Location& location) {
-    std::cout << "\n========== Enter Location Details ==========\n";
+    std::cout << "\n========== Enter Location Details ==========\n" << std::endl;
     std::cout << "Name: ";
     std::string name;
     is >> name;
@@ -188,13 +188,15 @@ std::istream& operator>>(std::istream& is, Location& location) {
 
     // Allocate memory for zoneCapacities array and read values
     int* zoneCapacities = new int[numZones];
-    for(int i = 0; i < numZones; ++i) {
-        std::cout << "Capacity for Zone " << (i+1) << ": ";
+    for (int i = 0; i < numZones; ++i) {
+        std::cout << "Capacity for Zone " << (i + 1) << ": ";
         is >> zoneCapacities[i];
     }
     location.setZoneCapacities(zoneCapacities);
     delete[] zoneCapacities;
 
-    std::cout << "\n========== Location Details Entered\n\n";
+    std::cout << "\n========== Location Details Entered ==========\n" << std::endl;
     return is;
 }
+
+
