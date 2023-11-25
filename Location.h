@@ -45,6 +45,10 @@ public:
 
     // Display details method
     void displayLocationDetails() const;
+
+    // Operator overloads
+    friend std::ostream& operator<<(std::ostream& os, const Location& location);
+    friend std::istream& operator<<(std::istream& is, Location& location);
 };
 
 #endif //THETICKETINGAPP_LOCATION_H

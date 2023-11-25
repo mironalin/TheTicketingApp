@@ -154,3 +154,47 @@ void Location::displayLocationDetails() const {
     }
     std::cout << "\n========== Location Details ==========\n\n";
 }
+
+// Operator overloads
+std::ostream& operator<<(std::ostream& os, const Location& location) {
+    os << location.name << " " << location.maxSeats << " "  << location.numRows << " " << location.numZones;
+    for(int i = 0; i < location.numZones; ++i) {
+        os << " " << location.zoneCapacities[i];
+    }
+    return os;
+}
+
+std::istream& operator>>(std::istream& is, Location& location) {
+    std::cout << "\n========== Enter Location Details ==========\n";
+    std::cout << "Name: ";
+    std::string name;
+    is >> name;
+    location.setLocationName(name.c_str());
+
+    std::cout << "Maximum Seats: ";
+    int maxSeats;
+    is >> maxSeats;
+    location.setMaxSeats(maxSeats);
+
+    std::cout << "Number of Rows: ";
+    int numRows;
+    is >> numRows;
+    location.setNumRows(numRows);
+
+    std::cout << "Number of Zones: ";
+    int numZones;
+    is >> numZones;
+    location.setNumZones(numZones);
+
+    // Allocate memory for zoneCapacities array and read values
+    int* zoneCapacities = new int[numZones];
+    for(int i = 0; i < numZones; ++i) {
+        std::cout << "Capacity for Zone " << (i+1) << ": ";
+        is >> zoneCapacities[i];
+    }
+    location.setZoneCapacities(zoneCapacities);
+    delete[] zoneCapacities;
+
+    std::cout << "\n========== Location Details Entered\n\n";
+    return is;
+}

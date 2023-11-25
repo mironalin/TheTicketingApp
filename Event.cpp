@@ -126,3 +126,31 @@ void Event::displayEventDetails() const {
     std::cout << "Event Time: " << eventTime << "\n";
     std::cout << "========== Event details ==========\n\n";
 }
+
+// Operator overloads
+std::ostream& operator<<(std::ostream& os, const Event& event) {
+    os << event.eventName << " - Date: " << event.eventDate << ", Time: " << event.eventTime;
+    return os;
+}
+
+std::istream& operator>>(std::istream& is, Event& event) {
+    char buffer[100]; // Assuming a maximum length for input strings;
+
+    std::cout << "\n========== Enter Event Details ==========\n";
+
+    std::cout << "\nEnter Event Name: ";
+    is >> buffer;
+    event.setEventName(buffer);
+
+    std::cout << "\nEnter Event Date: ";
+    is >> buffer;
+    event.setEventDate(buffer);
+
+    std::cout << "\nEnter Event Time: ";
+    is >> buffer;
+    event.setEventTime(buffer);
+
+    std::cout << "\n========== Event Details Entered ==========\n\n";
+
+    return is;
+}

@@ -46,10 +46,6 @@ const char* Ticket::getTicketType() const {
     return ticketType;
 }
 
-int Ticket::getUniqueIdCounter() {
-    return uniqueIdCounter;
-}
-
 // Other processing methods
 void Ticket::generateTicketId() {
     // Generate a unique ticket ID based on the static counter
@@ -77,3 +73,7 @@ void Ticket::setTicketType(const char* type) {
     strcpy(ticketType, type);
 }
 
+// Public static member function to get uniqueIdCounter value
+int Ticket::getUniqueIdCounter() {
+    return uniqueIdCounter;
+}
