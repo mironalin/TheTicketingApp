@@ -2,6 +2,22 @@
 #include <iostream>
 #include <cstring>
 
+// Default constructor
+Event::Event() : eventName(nullptr), eventDate(nullptr), eventTime(nullptr) {}
+
+// Parameterized constructor
+Event::Event(const char* name, const char* date, const char* time) {
+    // Allocate memory for eventName, eventDate, and eventTime and copy the input strings
+    eventName = new char[strlen(name) + 1];
+    strcpy(eventName, name);
+
+    eventDate = new char[strlen(date) + 1];
+    strcpy(eventDate, date);
+
+    eventTime = new char[strlen(time) + 1];
+    strcpy(eventTime, time);
+}
+
 // Accessors
 const char* Event::getEventName() const {
     return eventName;

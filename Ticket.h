@@ -14,6 +14,10 @@ private:
     static int uniqueIdCounter;
 
 public:
+    // Default constructor
+    Ticket();
+    Ticket(const char* type);
+
     // Accessors
     int getTicketId() const;
     const char* getTicketType() const;

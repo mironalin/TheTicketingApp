@@ -14,6 +14,9 @@ private:
     char* eventTime;
 
 public:
+    // Default constructor
+    Event();
+    Event(const char* name, const char* date, const char* time);
 
     // Accessors
     const char* getEventName() const;

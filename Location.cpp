@@ -2,6 +2,22 @@
 #include <iostream>
 #include <cstring>
 
+// Default constructor
+Location::Location() : name(nullptr), maxSeats(0), numRows(0), numZones(0), zoneCapacities(nullptr) {}
+
+// Parameterized constructor
+Location::Location(const char* n, int max, int rows, int zones, int* capacities) : maxSeats(max), numRows(rows), numZones(zones) {
+    // Allocate memory for name and copy the input string
+    name = new char[strlen(n) + 1];
+    strcpy(name, n);
+
+    // Allocate memory for zoneCapacities and copy values
+    zoneCapacities = new int[numZones];
+    for (int i = 0; i < numZones; ++i) {
+        zoneCapacities[i] = capacities[i];
+    }
+}
+
 // Accessors
 const char* Location::getLocationName() const {
     return name;

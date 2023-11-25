@@ -3,6 +3,9 @@
 
 int Ticket::uniqueIdCounter = 1000; // Initialize the static member
 
+// Default constructor
+Ticket::Ticket() : ticketId(0), ticketType(nullptr) {}
+
 // Accessors
 int Ticket::getTicketId() const {
     return ticketId;

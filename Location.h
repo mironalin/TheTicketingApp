@@ -16,6 +16,9 @@ private:
     int* zoneCapacities;
 
 public:
+    // Default constructor
+    Location();
+    Location(const char* n, int max, int rows, int zones, int* capacities);
 
     // Accessors
     const char* getLocationName() const;
