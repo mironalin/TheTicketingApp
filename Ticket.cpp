@@ -19,6 +19,17 @@ int Ticket::getUniqueIdCounter() {
     return uniqueIdCounter;
 }
 
+// Other processing methods
+void Ticket::generateTicketId() {
+    // Generate a unique ticket ID based on the static counter
+    ticketId = ++uniqueIdCounter;
+}
+
+void Ticket::displayTicketDetails() const {
+    std::cout << "Ticket ID: " << ticketId << "\n";
+    std::cout << "Ticket Type: " << ticketType << "\n";
+}
+
 // Setters with validations
 void Ticket::setTicketType(const char* type) {
     // Validate the input (type should not be empty)

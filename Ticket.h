@@ -23,6 +23,10 @@ public:
     const char* getTicketType() const;
     static int getUniqueIdCounter();
 
+    // Other processing methods
+    void generateTicketId();
+    void displayTicketDetails() const;
+
     // Setters with validations
     void setTicketType(const char* type);
 };
