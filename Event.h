@@ -21,6 +21,9 @@ public:
     // Destructor
     ~Event();
 
+    // Copy constructor
+    Event(const Event& other);
+
     // Accessors
     const char* getEventName() const;
     const char* getEventDate() const;

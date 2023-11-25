@@ -25,6 +25,19 @@ Event::~Event() {
     delete[] eventTime;
 }
 
+// Copy constructor
+Event::Event(const Event &other) {
+    // Allocate memory for eventName, eventDate, and eventTime and copy from the other object
+    eventName = new char[strlen(other.eventName) + 1];
+    strcpy(eventName, other.eventName);
+
+    eventDate = new char[strlen(other.eventDate) + 1];
+    strcpy(eventDate, other.eventDate);
+
+    eventTime = new char[strlen(other.eventTime) + 1];
+    strcpy(eventTime, other.eventTime);
+}
+
 // Accessors
 const char* Event::getEventName() const {
     return eventName;

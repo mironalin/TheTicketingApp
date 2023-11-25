@@ -23,6 +23,9 @@ public:
     // Destructor
     ~Location();
 
+    // Copy constructor
+    Location(const Location& other);
+
     // Accessors
     const char* getLocationName() const;
     int getMaxSeats() const;

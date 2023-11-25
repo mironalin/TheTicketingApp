@@ -16,6 +16,15 @@ Ticket::~Ticket() {
     delete[] ticketType;
 }
 
+// Copy constructor
+Ticket::Ticket(const Ticket &other) {
+    // Allocate memory for ticketType and copy from the other object
+    ticketType = new char[strlen(other.ticketType) + 1];
+    strcpy(ticketType, other.ticketType);
+
+    // Copy Ticket ID
+    ticketId = other.ticketId;
+}
 
 const char* Ticket::getTicketType() const {
     return ticketType;

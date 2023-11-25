@@ -21,6 +21,8 @@ public:
     // Destructor
     ~Ticket();
 
+    // Copy constructor
+    Ticket(const Ticket& other);
     // Accessors
     int getTicketId() const;
     const char* getTicketType() const;
