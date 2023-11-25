@@ -165,23 +165,23 @@ std::ostream& operator<<(std::ostream& os, const Location& location) {
 }
 
 std::istream& operator>>(std::istream& is, Location& location) {
-    std::cout << "\n========== Enter Location Details ==========\n" << std::endl;
-    std::cout << "Name: ";
+    std::cout << "\n========== Enter Location Details ==========\n";
+    std::cout << "\nEnter Location Name: ";
     std::string name;
     is >> name;
     location.setLocationName(name.c_str());
 
-    std::cout << "Maximum Seats: ";
+    std::cout << "\nEnter Maximum Seats: ";
     int maxSeats;
     is >> maxSeats;
     location.setMaxSeats(maxSeats);
 
-    std::cout << "Number of Rows: ";
+    std::cout << "\nEnter Number of Rows: ";
     int numRows;
     is >> numRows;
     location.setNumRows(numRows);
 
-    std::cout << "Number of Zones: ";
+    std::cout << "\nEnter Number of Zones: ";
     int numZones;
     is >> numZones;
     location.setNumZones(numZones);
@@ -189,7 +189,7 @@ std::istream& operator>>(std::istream& is, Location& location) {
     // Allocate memory for zoneCapacities array and read values
     int* zoneCapacities = new int[numZones];
     for (int i = 0; i < numZones; ++i) {
-        std::cout << "Capacity for Zone " << (i + 1) << ": ";
+        std::cout << "\nCapacity for Zone " << (i + 1) << ": ";
         is >> zoneCapacities[i];
     }
     location.setZoneCapacities(zoneCapacities);
