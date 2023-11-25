@@ -37,6 +37,31 @@ Location::Location(const Location &other) : maxSeats(other.maxSeats), numRows(ot
     }
 }
 
+// Copy assignment operator
+Location& Location::operator=(const Location &other) {
+    if(this != &other) {
+        // Free existing memory
+        delete[] name;
+        delete[] zoneCapacities;
+
+        // Copy values from the other object
+        maxSeats = other.maxSeats;
+        numRows = other.numRows;
+        numZones = numZones;
+
+        // Allocate memory for name and copy from the other object
+        name = new char[strlen(other.name) + 1];
+        strcpy(name, other.name);
+
+        // Allocate memory for zoneCapacities and copy values
+        zoneCapacities = new int[numZones];
+        for(int i = 0; i < numZones; ++i) {
+            zoneCapacities[i] = other.zoneCapacities[i];
+        }
+    }
+    return *this;
+}
+
 // Accessors
 const char* Location::getLocationName() const {
     return name;

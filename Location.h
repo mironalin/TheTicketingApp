@@ -26,6 +26,9 @@ public:
     // Copy constructor
     Location(const Location& other);
 
+    // Copy assignment operator
+    Location& operator=(const Location& other);
+
     // Accessors
     const char* getLocationName() const;
     int getMaxSeats() const;

@@ -24,6 +24,9 @@ public:
     // Copy constructor
     Event(const Event& other);
 
+    // Copy assignment operator
+    Event& operator=(const Event& other);
+
     // Accessors
     const char* getEventName() const;
     const char* getEventDate() const;

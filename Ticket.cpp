@@ -21,6 +21,22 @@ Ticket::Ticket(const Ticket &other) {
     ticketId = other.ticketId;
 }
 
+// Copy assignment operator
+Ticket& Ticket::operator=(const Ticket &other) {
+    if(this != &other) {
+        // Free existing memory
+        delete[] ticketType;
+
+        // Copy values from the other object
+        ticketType = new char[strlen(other.ticketType) + 1];
+        strcpy(ticketType, other.ticketType);
+
+        // Copy ticket ID
+        ticketId = other.ticketId;
+    }
+    return *this;
+}
+
 // Accessors
 int Ticket::getTicketId() const {
     return ticketId;

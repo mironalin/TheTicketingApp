@@ -24,6 +24,9 @@ public:
     // Copy constructor
     Ticket(const Ticket& other);
 
+    // Copy assignment operator
+    Ticket& operator=(const Ticket& other);
+
     // Accessors
     int getTicketId() const;
     const char* getTicketType() const;

@@ -38,6 +38,27 @@ Event::Event(const Event &other) {
     strcpy(eventTime, other.eventTime);
 }
 
+// Copy assignment operator
+Event& Event::operator=(const Event& other) {
+    if(this != &other) {
+        // Free existing memory
+        delete[] eventName;
+        delete[] eventDate;
+        delete[] eventTime;
+
+        // Copy values from the other object
+        eventName = new char[strlen(other.eventName) + 1];
+        strcpy(eventName, other.eventName);
+
+        eventDate = new char[strlen(other.eventDate) + 1];
+        strcpy(eventDate, other.eventDate);
+
+        eventTime = new char[strlen(other.eventTime) + 1];
+        strcpy(eventDate, other.eventDate);
+    }
+    return *this;
+}
+
 // Accessors
 const char* Event::getEventName() const {
     return eventName;
