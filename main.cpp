@@ -39,7 +39,7 @@ void processFile(const std::string& fileName) {
                 generatedTicket.generateTicketId();
                 generatedTicket.displayTicketDetails();
                 tickets.push_back(generatedTicket);
-                std::cout << "Normal ticket generated successfully.\n";
+                std::cout << "\nNormal ticket generated successfully.\n";
                 break;
             }
             case 2: {
@@ -47,7 +47,7 @@ void processFile(const std::string& fileName) {
                 generatedTicket.generateTicketId();
                 generatedTicket.displayTicketDetails();
                 tickets.push_back(generatedTicket);
-                std::cout << "VIP ticket generated successfully.\n";
+                std::cout << "\nVIP ticket generated successfully.\n";
                 break;
             }
             case 3: {
@@ -69,23 +69,7 @@ void processFile(const std::string& fileName) {
 }
 // Function for console menu
 void consoleMenu() {
-    // Initialize Location and Event
-    Location location;
-    Event event;
 
-    // User input for Location
-    std::cin >> location;
-
-    // User input for Event
-    std::cin >> event;
-
-    // Display Location details
-    std::cout << "\nLocation Details:\n";
-    location.displayLocationDetails();
-
-    // Display Event details
-    std::cout << "\nEvent Details:\n";
-    event.displayEventDetails();
 
     // Menu-driven options
     int choice;
@@ -101,19 +85,55 @@ void consoleMenu() {
 
         switch (choice) {
             case 1: {
+                // Initialize Location and Event
+                Location location;
+                Event event;
+
+                // User input for Location
+                std::cin >> location;
+
+                // User input for Event
+                std::cin >> event;
+
+                // Display Location details
+                std::cout << "\nLocation Details:\n";
+                location.displayLocationDetails();
+
+                // Display Event details
+                std::cout << "\nEvent Details:\n";
+                event.displayEventDetails();
+
                 Ticket generatedTicket("Normal");
                 generatedTicket.generateTicketId();
                 generatedTicket.displayTicketDetails();
                 tickets.push_back(generatedTicket);
-                std::cout << "Normal ticket generated successfully.\n";
+                std::cout << "\nNormal ticket generated successfully.\n";
                 break;
             }
             case 2: {
+                // Initialize Location and Event
+                Location location;
+                Event event;
+
+                // User input for Location
+                std::cin >> location;
+
+                // User input for Event
+                std::cin >> event;
+
+                // Display Location details
+                std::cout << "\nLocation Details:\n";
+                location.displayLocationDetails();
+
+                // Display Event details
+                std::cout << "\nEvent Details:\n";
+                event.displayEventDetails();
+
                 Ticket generatedTicket("VIP");
                 generatedTicket.generateTicketId();
                 generatedTicket.displayTicketDetails();
                 tickets.push_back(generatedTicket);
-                std::cout << "VIP ticket generated successfully.\n";
+                std::cout << "\nVIP ticket generated successfully.\n";
                 break;
             }
             case 3: {
@@ -129,7 +149,7 @@ void consoleMenu() {
                 std::cout << "Invalid choice. Please try again.\n";
             }
         }
-    } while (choice != 3);
+    } while (choice != 4);
 }
 
 // Function for calling processFile() from console if the user chooses to read from a file
