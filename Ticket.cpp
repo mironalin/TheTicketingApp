@@ -1,5 +1,6 @@
 #include "Ticket.h"
 #include <cstring>
+#include <chrono>
 
 int Ticket::uniqueIdCounter = 1000; // Initialize the static member
 
@@ -58,8 +59,17 @@ const char* Ticket::getTicketType() const {
 
 // Other processing methods
 void Ticket::generateTicketId() {
-    // Generate a unique ticket ID based on the static counter
-    ticketId = ++uniqueIdCounter;
+    // Use a combination of a static counter and the current time
+    auto now = std::chrono::system_clock::now();
+    auto duration = now.time_since_epoch();
+    auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+
+    // Combine the current time in milliseconds with the static counter
+    ticketId = millis + (++uniqueIdCounter);
+    // Make the id positive
+    if (ticketId < 0) {
+        ticketId *= -1;
+    }
 }
 
 void Ticket::displayTicketDetails() const {

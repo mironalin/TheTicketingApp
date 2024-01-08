@@ -8,6 +8,9 @@
 
 std::vector<Ticket> tickets;
 
+// Function prototype
+void validateTicket();
+
 // Function for file processing using command line arguments
 void processFile(const std::string& fileName) {
     std::ifstream file(fileName);
@@ -36,23 +39,29 @@ void processFile(const std::string& fileName) {
                 generatedTicket.generateTicketId();
                 generatedTicket.displayTicketDetails();
                 tickets.push_back(generatedTicket);
-                std::cout << "Ticket generated successfully.\n";
+                std::cout << "Normal ticket generated successfully.\n";
                 break;
             }
             case 2: {
-                int ticketId;
-                file >> ticketId;
-                if(ticketId >= Ticket::getUniqueIdCounter() - 10 && ticketId <= Ticket::getUniqueIdCounter()) {
-                    std::cout << "Ticket is valid.\n";
-                } else {
-                    std::cout << "Ticket is not valid.\n";
-                }
+                Ticket generatedTicket("VIP");
+                generatedTicket.generateTicketId();
+                generatedTicket.displayTicketDetails();
+                tickets.push_back(generatedTicket);
+                std::cout << "VIP ticket generated successfully.\n";
                 break;
             }
-            case 3:
-                return;
-            default:
-                std::cerr << "Invalid choice in file.\n";
+            case 3: {
+                // Validate Ticket
+                validateTicket();
+                break;
+            }
+            case 4: {
+                std::cout << "\nExiting the program.\n";
+                break;
+            }
+            default: {
+                std::cout << "Invalid choice. Please try again.\n";
+            }
         }
     }
 
@@ -109,21 +118,13 @@ void consoleMenu() {
             }
             case 3: {
                 // Validate Ticket
-                int ticketId;
-                std::cout << "\nEnter Ticket ID to validate: ";
-                std::cin >> ticketId;
-
-                // Access the static member using public static member function
-                if(ticketId >= Ticket::getUniqueIdCounter() - 10 && ticketId <= Ticket::getUniqueIdCounter()) {
-                    std::cout << "Ticket is valid. \n";
-                } else {
-                    std::cout << "Ticket is not valid.\n";
-                }
+                validateTicket();
                 break;
             }
-            case 4:
+            case 4: {
                 std::cout << "\nExiting the program.\n";
                 break;
+            }
             default: {
                 std::cout << "Invalid choice. Please try again.\n";
             }
@@ -184,6 +185,27 @@ void saveTickets() {
         }
     }
     outFile.close();
+}
+
+// Function for validating a ticket
+void validateTicket() {
+    int ticketId;
+    std::cout << "\nEnter Ticket ID to validate: ";
+    std::cin >> ticketId;
+
+    bool isValid = false;
+    for (const auto& ticket : tickets) {
+        if (ticket.getTicketId() == ticketId) {
+            isValid = true;
+            break;
+        }
+    }
+
+    if (isValid) {
+        std::cout << "Ticket is valid. \n";
+    } else {
+        std::cout << "Ticket is not valid.\n";
+    }
 }
 
 int main(int argc, char* argv[]) {
