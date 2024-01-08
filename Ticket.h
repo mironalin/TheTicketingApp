@@ -6,6 +6,7 @@
 #define THETICKETINGAPP_TICKET_H
 
 #include <iostream>
+#include <fstream>
 
 class Ticket {
 private:
@@ -40,6 +41,13 @@ public:
 
     // Public static member function to get uniqueIdCounter value
     static int getUniqueIdCounter();
+
+    // Public static member function to update uniqueIdCounter value
+    static void updateUniqueIdCounter(int lastId);
+
+    // Serialize and deserialize methods
+    void serialize(std::ofstream& out) const;
+    void deserialize(std::ifstream& in);
 };
 
 #endif //THETICKETINGAPP_TICKET_H

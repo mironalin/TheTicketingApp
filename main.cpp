@@ -4,6 +4,9 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
+
+std::vector<Ticket> tickets;
 
 // Function for file processing using command line arguments
 void processFile(const std::string& fileName) {
@@ -32,6 +35,8 @@ void processFile(const std::string& fileName) {
                 Ticket generatedTicket("Normal");
                 generatedTicket.generateTicketId();
                 generatedTicket.displayTicketDetails();
+                tickets.push_back(generatedTicket);
+                std::cout << "Ticket generated successfully.\n";
                 break;
             }
             case 2: {
@@ -77,9 +82,10 @@ void consoleMenu() {
     int choice;
     do {
         std::cout << "\n========== MENU ==========";
-        std::cout << "\n1. Generate Ticket \n";
-        std::cout << "\n2. Validate Ticket \n";
-        std::cout << "\n3. Exit \n";
+        std::cout << "\n1. Generate Normal Ticket \n";
+        std::cout << "2. Generate VIP Ticket \n";
+        std::cout << "3. Validate Ticket \n";
+        std::cout << "4. Exit \n";
         std::cout << "========== MENU ==========\n";
         std::cout << "\nEnter your choice: ";
         std::cin >> choice;
@@ -89,9 +95,19 @@ void consoleMenu() {
                 Ticket generatedTicket("Normal");
                 generatedTicket.generateTicketId();
                 generatedTicket.displayTicketDetails();
+                tickets.push_back(generatedTicket);
+                std::cout << "Normal ticket generated successfully.\n";
                 break;
             }
             case 2: {
+                Ticket generatedTicket("VIP");
+                generatedTicket.generateTicketId();
+                generatedTicket.displayTicketDetails();
+                tickets.push_back(generatedTicket);
+                std::cout << "VIP ticket generated successfully.\n";
+                break;
+            }
+            case 3: {
                 // Validate Ticket
                 int ticketId;
                 std::cout << "\nEnter Ticket ID to validate: ";
@@ -105,7 +121,7 @@ void consoleMenu() {
                 }
                 break;
             }
-            case 3:
+            case 4:
                 std::cout << "\nExiting the program.\n";
                 break;
             default: {
@@ -123,6 +139,7 @@ void readFromFile() {
     processFile(fileName);
 }
 
+// Function for calling consoleMenu() from console if the user chooses to enter data from the keyboard
 void chooseInputMethod() {
     std::cout << "Do you want to enter data from the keyboard or read from a text file? (keyboard/file): ";
     std::string inputMethod;
@@ -138,11 +155,52 @@ void chooseInputMethod() {
     }
 }
 
+// Function for loading tickets from file
+void loadTickets() {
+    std::ifstream  inFile("tickets.bin", std::ios::binary);
+    while (inFile.peek() != EOF) {
+        Ticket ticket;
+        ticket.deserialize(inFile);
+        tickets.push_back(ticket);
+    }
+    inFile.close();
+    if (!tickets.empty()) {
+        Ticket::updateUniqueIdCounter(tickets.back().getTicketId());
+    }
+}
+
+// Function for saving tickets to file
+void saveTickets() {
+    std::ofstream outFile("tickets.bin", std::ios::binary | std::ios::trunc);
+    if (!outFile) {
+        std::cerr << "Error: Unable to open tickets.bin for writing." << std::endl;
+        return;
+    }
+    for (const auto& ticket : tickets) {
+        ticket.serialize(outFile);
+        if (!outFile) {
+            std::cerr << "Error: Write to tickets.bin failed." << std::endl;
+            break;
+        }
+    }
+    outFile.close();
+}
+
 int main(int argc, char* argv[]) {
+    loadTickets();
+
+    if (tickets.empty()) {
+        std::cout << "No existing tickets found. Starting fresh." << std::endl;
+    } else {
+        std::cout << "Loaded existing tickets." << std::endl;
+    }
+
     if (argc > 1) {  // Command line arguments
         processFile(argv[1]);
+        saveTickets();
     } else {  // Console menu
         chooseInputMethod();
+        saveTickets();
         return 0;
     }
 }

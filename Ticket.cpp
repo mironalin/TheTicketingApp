@@ -89,3 +89,27 @@ void Ticket::setTicketType(const char* type) {
 int Ticket::getUniqueIdCounter() {
     return uniqueIdCounter;
 }
+
+// Public static member function to update uniqueIdCounter value
+void Ticket::updateUniqueIdCounter(int lastId) {
+    uniqueIdCounter = lastId;
+}
+
+// Serialize method
+void Ticket::serialize(std::ofstream& out) const {
+    out.write(reinterpret_cast<const char*>(&ticketId), sizeof(ticketId));
+    size_t length = strlen(ticketType);
+    out.write(reinterpret_cast<const char*>(&length), sizeof(length));
+    out.write(ticketType, length);
+}
+
+// Deserialize method
+void Ticket::deserialize(std::ifstream& in) {
+    in.read(reinterpret_cast<char*>(&ticketId), sizeof(ticketId));
+    size_t length;
+    in.read(reinterpret_cast<char*>(&length), sizeof(length));
+    delete[] ticketType;
+    ticketType = new char[length + 1];
+    in.read(ticketType, length);
+    ticketType[length] = '\0';
+}
