@@ -9,7 +9,29 @@
 std::vector<Ticket> tickets;
 
 // Function prototype
+void generateTicketOfType(const char* type);
 void validateTicket();
+
+// Function for initializing Location and Event
+void initLocAndEvent () {
+    // Initialize Location and Event
+    Location location;
+    Event event;
+
+    // User input for Location
+    std::cin >> location;
+
+    // User input for Event
+    std::cin >> event;
+
+    // Display Location details
+    std::cout << "\nLocation Details:\n";
+    location.displayLocationDetails();
+
+    // Display Event details
+    std::cout << "\nEvent Details:\n";
+    event.displayEventDetails();
+}
 
 // Function for file processing using command line arguments
 void processFile(const std::string& fileName) {
@@ -35,19 +57,11 @@ void processFile(const std::string& fileName) {
     while (file >> ticketChoice) {
         switch (ticketChoice) {
             case 1: {
-                Ticket generatedTicket("Normal");
-                generatedTicket.generateTicketId();
-                generatedTicket.displayTicketDetails();
-                tickets.push_back(generatedTicket);
-                std::cout << "\nNormal ticket generated successfully.\n";
+                generateTicketOfType("Normal");
                 break;
             }
             case 2: {
-                Ticket generatedTicket("VIP");
-                generatedTicket.generateTicketId();
-                generatedTicket.displayTicketDetails();
-                tickets.push_back(generatedTicket);
-                std::cout << "\nVIP ticket generated successfully.\n";
+                generateTicketOfType("VIP");
                 break;
             }
             case 3: {
@@ -86,54 +100,18 @@ void consoleMenu() {
         switch (choice) {
             case 1: {
                 // Initialize Location and Event
-                Location location;
-                Event event;
+                initLocAndEvent();
 
-                // User input for Location
-                std::cin >> location;
-
-                // User input for Event
-                std::cin >> event;
-
-                // Display Location details
-                std::cout << "\nLocation Details:\n";
-                location.displayLocationDetails();
-
-                // Display Event details
-                std::cout << "\nEvent Details:\n";
-                event.displayEventDetails();
-
+                // Generate Normal Ticket
                 Ticket generatedTicket("Normal");
-                generatedTicket.generateTicketId();
-                generatedTicket.displayTicketDetails();
-                tickets.push_back(generatedTicket);
-                std::cout << "\nNormal ticket generated successfully.\n";
                 break;
             }
             case 2: {
                 // Initialize Location and Event
-                Location location;
-                Event event;
+                initLocAndEvent();
 
-                // User input for Location
-                std::cin >> location;
-
-                // User input for Event
-                std::cin >> event;
-
-                // Display Location details
-                std::cout << "\nLocation Details:\n";
-                location.displayLocationDetails();
-
-                // Display Event details
-                std::cout << "\nEvent Details:\n";
-                event.displayEventDetails();
-
+                // Generate VIP Ticket
                 Ticket generatedTicket("VIP");
-                generatedTicket.generateTicketId();
-                generatedTicket.displayTicketDetails();
-                tickets.push_back(generatedTicket);
-                std::cout << "\nVIP ticket generated successfully.\n";
                 break;
             }
             case 3: {
@@ -205,6 +183,17 @@ void saveTickets() {
         }
     }
     outFile.close();
+}
+
+void generateTicketOfType(const char* type) {
+    Ticket generatedTicket(type);
+    generatedTicket.generateTicketId();
+    generatedTicket.displayTicketDetails();
+
+    // Add the generated ticket to the vector
+    tickets.push_back(generatedTicket);
+
+    std::cout << "\n" << type << " ticket generated successfully.\n";
 }
 
 // Function for validating a ticket
