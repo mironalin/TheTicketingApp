@@ -155,6 +155,19 @@ void Location::displayLocationDetails() const {
     std::cout << "\n========== Location Details ==========\n\n";
 }
 
+// Input method for file processing
+void Location::readFromFile(std::istream& is) {
+    // Read data directly without prompts
+    std::string name;
+    is >> name;
+    setLocationName(name.c_str());
+    is >> maxSeats >> numRows >> numZones;
+    zoneCapacities = new int[numZones];
+    for (int i = 0; i < numZones; ++i) {
+        is >> zoneCapacities[i];
+    }
+}
+
 // Operator overloads
 std::ostream& operator<<(std::ostream& os, const Location& location) {
     os << location.name << " " << location.maxSeats << " "  << location.numRows << " " << location.numZones;

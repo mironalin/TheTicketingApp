@@ -40,6 +40,9 @@ public:
     // Display details method
     void displayEventDetails() const;
 
+    // Input method for file processing
+    void readFromFile(std::istream& is);
+
     // Operator overloads
     friend std::ostream& operator<<(std::ostream& os, const Event& event);
     friend std::istream& operator>>(std::istream& is, Event& event);

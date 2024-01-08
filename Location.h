@@ -46,6 +46,9 @@ public:
     // Display details method
     void displayLocationDetails() const;
 
+    // Input method for file processing
+    void readFromFile(std::istream& is);
+
     // Operator overloads
     friend std::ostream& operator<<(std::ostream& os, const Location& location);
     friend std::istream& operator>>(std::istream& is, Location& location);

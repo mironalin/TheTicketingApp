@@ -2,8 +2,59 @@
 #include "Event.h"
 #include "Ticket.h"
 #include <iostream>
+#include <fstream>
+#include <string>
 
-int main() {
+// Function for file processing using command line arguments
+void processFile(const std::string& fileName) {
+    std::ifstream file(fileName);
+    if (!file) {
+        std::cerr << "Error opening file: " << fileName << std::endl;
+        return;
+    }
+
+    Location location;
+    Event event;
+
+    // Process Location and Event from file
+    location.readFromFile(file);
+    event.readFromFile(file);
+
+    // Display details
+    location.displayLocationDetails();
+    event.displayEventDetails();
+
+    // Process Tickets from file
+    int ticketChoice;
+    while (file >> ticketChoice) {
+        switch (ticketChoice) {
+            case 1: {
+                Ticket generatedTicket("Normal");
+                generatedTicket.generateTicketId();
+                generatedTicket.displayTicketDetails();
+                break;
+            }
+            case 2: {
+                int ticketId;
+                file >> ticketId;
+                if(ticketId >= Ticket::getUniqueIdCounter() - 10 && ticketId <= Ticket::getUniqueIdCounter()) {
+                    std::cout << "Ticket is valid.\n";
+                } else {
+                    std::cout << "Ticket is not valid.\n";
+                }
+                break;
+            }
+            case 3:
+                return;
+            default:
+                std::cerr << "Invalid choice in file.\n";
+        }
+    }
+
+    file.close();
+}
+
+void consoleMenu() {
     // Initialize Location and Event
     Location location;
     Event event;
@@ -35,7 +86,6 @@ int main() {
 
         switch (choice) {
             case 1: {
-                // Generate Ticket
                 Ticket generatedTicket("Normal");
                 generatedTicket.generateTicketId();
                 generatedTicket.displayTicketDetails();
@@ -55,15 +105,22 @@ int main() {
                 }
                 break;
             }
-            case 3: {
-                std::cout << "\nExiting the program. \n";
+            case 3:
+                std::cout << "\nExiting the program.\n";
                 break;
-            }
             default: {
                 std::cout << "Invalid choice. Please try again.\n";
             }
         }
     } while (choice != 3);
+}
+
+int main(int argc, char* argv[]) {
+    if (argc > 1) {  // Command line arguments
+        processFile(argv[1]);
+    } else {  // Console menu
+        consoleMenu();
+    }
 
     return 0;
 }

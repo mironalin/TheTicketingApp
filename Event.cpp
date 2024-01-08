@@ -127,6 +127,19 @@ void Event::displayEventDetails() const {
     std::cout << "========== Event details ==========\n\n";
 }
 
+// Input method for file processing
+void Event::readFromFile(std::istream& is) {
+    // Read data directly without prompts
+    // Assuming eventName, eventDate, eventTime are std::strings for simplicity
+    std::string eventName, eventDate, eventTime;
+    is >> eventName;
+    is >> eventDate;
+    is >> eventTime;
+    setEventName(eventName.c_str());
+    setEventDate(eventDate.c_str());
+    setEventTime(eventTime.c_str());
+}
+
 // Operator overloads
 std::ostream& operator<<(std::ostream& os, const Event& event) {
     os << event.eventName << " - Date: " << event.eventDate << ", Time: " << event.eventTime;
