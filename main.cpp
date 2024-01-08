@@ -53,7 +53,7 @@ void processFile(const std::string& fileName) {
 
     file.close();
 }
-
+// Function for console menu
 void consoleMenu() {
     // Initialize Location and Event
     Location location;
@@ -115,12 +115,34 @@ void consoleMenu() {
     } while (choice != 3);
 }
 
+// Function for calling processFile() from console if the user chooses to read from a file
+void readFromFile() {
+    std::string fileName;
+    std::cout << "Enter the filename: ";
+    std::cin >> fileName;
+    processFile(fileName);
+}
+
+void chooseInputMethod() {
+    std::cout << "Do you want to enter data from the keyboard or read from a text file? (keyboard/file): ";
+    std::string inputMethod;
+    std::cin >> inputMethod;
+
+    if (inputMethod == "file") {
+        readFromFile();
+    } else if (inputMethod == "keyboard") {
+        consoleMenu();
+    } else {
+        std::cerr << "Invalid input. Please enter 'keyboard' or 'file'.\n";
+        chooseInputMethod();
+    }
+}
+
 int main(int argc, char* argv[]) {
     if (argc > 1) {  // Command line arguments
         processFile(argv[1]);
     } else {  // Console menu
-        consoleMenu();
+        chooseInputMethod();
+        return 0;
     }
-
-    return 0;
 }
