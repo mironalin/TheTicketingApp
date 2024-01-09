@@ -8,6 +8,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <limits>
 
 std::vector<Ticket> tickets;
 
@@ -30,7 +31,7 @@ void initLocAndEvent(Location& location, Event& event) {
     // User input for Location
     std::cin >> location;
 
-    //new
+    // Initialize the seating layout
     location.initializeSeats(); // Initialize the seating layout
 
     // User input for Event
@@ -50,9 +51,21 @@ void generateFootballTicket(Location& location) {
     int zone, row;
     std::cout << "\n========== Football Ticket Menu ==========\n";
     std::cout << "1. Stand: ";
-    std::cin >> zone;
-    std::cout << "2. Stand: ";
-    std::cin >> row;
+
+    // Validate input
+    while (!(std::cin >> zone) || zone < 1 || zone > location.getNumZones()) {
+        std::cout << "Invalid input. Please enter a valid stand: ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+    std::cout << "2. Row: ";
+    // Validate input
+    while (!(std::cin >> row) || row < 1 || row > location.getNumRows()) {
+        std::cout << "Invalid input. Please enter a valid row: ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+
     std::cout << "\n========== Football Ticket Menu ==========\n";
 
     FootballTicket footballTicket("Football Ticket", zone, row);
@@ -60,7 +73,7 @@ void generateFootballTicket(Location& location) {
         footballTicket.displayTicketDetails();
         tickets.push_back(footballTicket);
     } else {
-        std::cout << "No available seats in the specified zone and row." << std::endl;
+        std::cout << "No available seats in the specified stand and row." << std::endl;
     }
 }
 
@@ -73,22 +86,40 @@ void generateCinemaTicket(Location& location) {
     std::cout << "========== Cinema Ticket Menu ==========\n";
 
     std::cout << "Enter your choice: ";
-    std::cin >> choice;
+    // Validate input
+    while (!(std::cin >> choice) || choice < 1 || choice > 2) {
+        std::cout << "Invalid input. Please enter a valid choice: ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+
     std::cout << "Area: ";
-    std::cin >> zone;
+    // Validate input
+    while (!(std::cin >> zone) || zone < 1 || zone > location.getNumZones()) {
+        std::cout << "Invalid input. Please enter a valid are: ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+
     std::cout << "Row: ";
-    std::cin >> row;
+    // Validate input
+    while (!(std::cin >> row) || row < 1 || row > location.getNumRows()) {
+        std::cout << "Invalid input. Please enter a valid row: ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
     std::cout << "\n========== Cinema Ticket Menu ==========\n";
 
-
+    // Ternary operator to determine ticket type
     std::string ticketType = (choice == 1) ? "Normal Cinema Ticket " : "VIP Cinema Ticket";
 
+    // Create a CinemaTicket object and allocate a seat
     CinemaTicket cinemaTicket(ticketType.c_str(), zone, row);
     if (cinemaTicket.findAndAllocateSeat(location)) {
         cinemaTicket.displayTicketDetails();
         tickets.push_back(cinemaTicket);
     } else {
-        std::cout << "No available seats in the specified zone and row." << std::endl;
+        std::cout << "No available seats in the specified area and row." << std::endl;
     }
 }
 
@@ -102,13 +133,33 @@ void generateTheaterTicket(Location& location) {
     std::cout << "========== Theater Ticket Menu ==========\n";
 
     std::cout << "Enter your choice: ";
-    std::cin >> choice;
+
+    // Validate input
+    while (!(std::cin >> choice) || choice < 1 || choice > 3) {
+        std::cout << "Invalid input. Please enter a valid choice: ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+
     std::cout << "Area: ";
-    std::cin >> zone;
+    // Validate input
+    while (!(std::cin >> zone) || zone < 1 || zone > location.getNumZones()) {
+        std::cout << "Invalid input. Please enter a valid area: ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+
     std::cout << "Row: ";
-    std::cin >> row;
+    // Validate input
+    while (!(std::cin >> row) || row < 1 || row > location.getNumRows()) {
+        std::cout << "Invalid input. Please enter a valid row: ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+
     std::cout << "\n========== Cinema Ticket Menu ==========\n";
 
+    // Ternary operator to determine ticket type
     std::string ticketType;
     if (choice == 1) {
         ticketType = "Category 1 Theater Ticket";
@@ -118,6 +169,7 @@ void generateTheaterTicket(Location& location) {
         ticketType = "Box Theater Ticket";
     }
 
+    // Create a TheaterTicket object and allocate a seat
     TheaterTicket theaterTicket(ticketType.c_str(), zone, row);
     if (theaterTicket.findAndAllocateSeat(location)) {
         theaterTicket.displayTicketDetails();
@@ -157,7 +209,14 @@ void processFile(const std::string& fileName) {
         std::cout << "3. Exit\n";
         std::cout << "========== MAIN MENU ==========\n";
         std::cout << "Enter your choice: ";
-        std::cin >> choice;
+
+        // Validate input
+        while (!(std::cin >> choice) || choice < 1 || choice > 3) {
+            std::cout << "Invalid choice. Please try again.\n";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Enter your choice: ";
+        }
 
         switch (choice) {
             case 1:
@@ -189,7 +248,14 @@ void consoleMenu() {
         std::cout << "3. Exit\n";
         std::cout << "========== MAIN MENU ==========\n";
         std::cout << "Enter your choice: ";
-        std::cin >> choice;
+
+        // Validate input
+        while (!(std::cin >> choice) || choice < 1 || choice > 3) {
+            std::cout << "Invalid choice. Please try again.\n";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Enter your choice: ";
+        }
 
         switch (choice) {
             case 1:
@@ -218,7 +284,13 @@ void ticketGenerationMenu(Location& location) {
         std::cout << "3. Generate Theater Ticket\n";  // Placeholder for future implementation
         std::cout << "4. Back to Main Menu\n";
         std::cout << "Enter your choice: ";
-        std::cin >> choice;
+        // Validate input
+        while (!(std::cin >> choice) || choice < 1 || choice > 4) {
+            std::cout << "Invalid choice. Please try again.\n";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Enter your choice: ";
+        }
 
         switch (choice) {
             case 1:
@@ -243,7 +315,12 @@ void ticketGenerationMenu(Location& location) {
 void readFromFile() {
     std::string fileName;
     std::cout << "Enter the filename: ";
-    std::cin >> fileName;
+    // Validate input
+    while (!(std::cin >> fileName)) {
+        std::cout << "Invalid input. Please enter a valid filename: ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
     processFile(fileName);
 }
 
