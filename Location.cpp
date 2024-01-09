@@ -1,6 +1,8 @@
 #include "Location.h"
 #include <iostream>
 #include <cstring>
+#include <algorithm>
+#include <limits>
 
 // Default constructor
 Location::Location() : name(nullptr), maxSeats(0), numRows(0), numZones(0), zoneCapacities(nullptr) {}
@@ -11,14 +13,12 @@ Location::Location(const char* n, int max, int rows, int zones, int* capacities)
     name = new char[strlen(n) + 1];
     strcpy(name, n);
 
-    // Allocate memory for zoneCapacities and copy values
+    // Allocate memory for zoneCapacities and copy values and validate
     zoneCapacities = new int[numZones];
     for (int i = 0; i < numZones; ++i) {
         zoneCapacities[i] = capacities[i];
     }
-
 }
-
 
 // Destructor
 Location::~Location() {
@@ -161,12 +161,24 @@ void Location::displayLocationDetails() const {
 void Location::readFromFile(std::istream& is) {
     // Read data directly without prompts
     std::string name;
-    is >> name;
+    if(!(is >> name)) {
+        std::cerr << "Error reading Location Name from file\n";
+        return;
+    }
     setLocationName(name.c_str());
-    is >> maxSeats >> numRows >> numZones;
+
+    if(!(is >> maxSeats >> numRows >> numZones) || maxSeats <= 0 || numZones <= 0 || numRows <= 0) {
+        std::cerr << "Error reading numeric values or invalid values provided for Maximum number of Seats, Rows, or Zones\n";
+        return;
+    }
+
     zoneCapacities = new int[numZones];
     for (int i = 0; i < numZones; ++i) {
-        is >> zoneCapacities[i];
+        if (!(is >> zoneCapacities[i]) || zoneCapacities[i] <= 0) {
+            std::cerr << "Error reading numeric values or invalid values provided for Zone Capacities\n";
+            delete[] zoneCapacities; // Clean up to avoid memory leaks
+            return;
+        }
     }
 }
 
@@ -181,31 +193,77 @@ std::ostream& operator<<(std::ostream& os, const Location& location) {
 
 std::istream& operator>>(std::istream& is, Location& location) {
     std::cout << "\n========== Enter Location Details ==========\n";
+
     std::cout << "\nEnter Location Name: ";
     std::string name;
+    // Validate the input (name should not be empty) and should not contain digits
     is >> name;
+    while (name.empty() || std::any_of(name.begin(), name.end(), ::isdigit)) {
+        std::cerr << "Location Name should not be empty and should not contain digits. Please enter a valid name: ";
+        is >> name;
+    }
     location.setLocationName(name.c_str());
 
     std::cout << "\nEnter Maximum Seats: ";
     int maxSeats;
-    is >> maxSeats;
+    // Validate the input (max seats should be a positive value) and should not contain characters
+    while (true) {
+        if (!(is >> maxSeats)) {
+            std::cerr << "\nInvalid input. Please enter a positive integer for maximum seats: ";
+            is.clear(); // Clear the error state
+            is.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore the rest of the line
+        } else if (maxSeats <= 0) {
+            std::cerr << "\nMaximum seats should be a positive value. Please enter a valid value: ";
+            is.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore the rest of the line
+        } else {
+            break;
+        }
+    }
     location.setMaxSeats(maxSeats);
 
     std::cout << "\nEnter Number of Rows: ";
     int numRows;
-    is >> numRows;
+    // Validate the input (number of rows should be a positive value) and should not contain characters
+    while (true) {
+        if (!(is >> numRows)) {
+            std::cerr << "\nInvalid input. Please enter a positive integer for the number of rows: ";
+            is.clear(); // Clear the error state
+            is.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore the rest of the line
+        } else if (numRows <= 0) {
+            std::cerr << "\nNumber of rows should be a positive value. Please enter a valid value: ";
+            is.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore the rest of the line
+        } else {
+            break;
+        }
+    }
     location.setNumRows(numRows);
 
     std::cout << "\nEnter Number of Zones: ";
     int numZones;
-    is >> numZones;
+    // Validate the input (number of zones should be a positive value) and should not contain characters
+    while (true) {
+        if (!(is >> numZones)) {
+            std::cerr << "\nInvalid input. Please enter a positive integer for the number of zones: ";
+            is.clear(); // Clear the error state
+            is.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore the rest of the line
+        } else if (numZones <= 0) {
+            std::cerr << "\nNumber of zones should be a positive value. Please enter a valid value: ";
+            is.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore the rest of the line
+        } else {
+            break;
+        }
+    }
     location.setNumZones(numZones);
 
     // Allocate memory for zoneCapacities array and read values
     int* zoneCapacities = new int[numZones];
     for (int i = 0; i < numZones; ++i) {
         std::cout << "\nCapacity for Zone " << (i + 1) << ": ";
-        is >> zoneCapacities[i];
+        while (!(is >> zoneCapacities[i]) || zoneCapacities[i] <= 0) {
+            std::cerr << "Invalid input for zone capacity. Please enter a positive integer: ";
+            is.clear();
+            is.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
     }
     location.setZoneCapacities(zoneCapacities);
     delete[] zoneCapacities;
