@@ -184,6 +184,7 @@ void Event::displayEventDetails() const {
     std::cout << "========== Event details ==========\n\n";
 }
 
+/*
 // Input method for file processing
 void Event::readFromFile(std::istream& is) {
     // Read data directly without prompts
@@ -196,6 +197,36 @@ void Event::readFromFile(std::istream& is) {
     setEventDate(eventDate.c_str());
     setEventTime(eventTime.c_str());
 }
+*/
+
+void Event::readFromFile(std::istream& is) {
+    std::string eventName, eventDate, eventTime;
+
+    // Read Event Name
+    std::getline(is, eventName);
+    if (eventName.empty() || std::any_of(eventName.begin(), eventName.end(), ::isdigit)) {
+        std::cerr << "\nInvalid event name in file. It should not be empty and should not contain digits.";
+        return; // Abort reading process
+    }
+    setEventName(eventName.c_str());
+
+    // Read Event Date
+    std::getline(is, eventDate);
+    if (!isValidDate(eventDate.c_str())) {
+        std::cerr << "\nInvalid event date in file. It should be in DD.MM.YYYY format.";
+        return; // Abort reading process
+    }
+    setEventDate(eventDate.c_str());
+
+    // Read Event Time
+    std::getline(is, eventTime);
+    if (!isValidTime(eventTime.c_str())) {
+        std::cerr << "\nInvalid event time in file. It should be in HH:MM format.";
+        return; // Abort reading process
+    }
+    setEventTime(eventTime.c_str());
+}
+
 
 // Operator overloads
 std::ostream& operator<<(std::ostream& os, const Event& event) {

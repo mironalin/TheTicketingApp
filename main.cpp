@@ -58,7 +58,7 @@ void generateFootballTicket(Location& location) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
-    std::cout << "2. Row: ";
+    std::cout << "\n2. Row: ";
     // Validate input
     while (!(std::cin >> row) || row < 1 || row > location.getNumRows()) {
         std::cout << "Invalid input. Please enter a valid row: ";
@@ -175,7 +175,7 @@ void generateTheaterTicket(Location& location) {
         theaterTicket.displayTicketDetails();
         tickets.push_back(theaterTicket);
     } else {
-        std::cout << "No available seats in the specified zone and row." << std::endl;
+        std::cout << "\nNo available seats in the specified zone and row." << std::endl;
     }
 }
 
@@ -183,7 +183,7 @@ void generateTheaterTicket(Location& location) {
 void processFile(const std::string& fileName) {
     std::ifstream file(fileName);
     if (!file) {
-        std::cerr << "Error opening file: " << fileName << std::endl;
+        std::cerr << "\nError opening file: " << fileName << std::endl;
         return;
     }
     Location location;
@@ -315,28 +315,28 @@ void ticketGenerationMenu(Location& location) {
 // Function for calling processFile() from console if the user chooses to read from a file
 void readFromFile() {
     std::string fileName;
-    std::cout << "Enter the filename: ";
+    std::cout << "\nEnter the filename: ";
     // Validate input
     while (!(std::cin >> fileName)) {
-        std::cout << "Invalid input. Please enter a valid filename: ";
+        std::cout << "\nInvalid input. Please enter a valid filename: ";
         std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
     processFile(fileName);
 }
 
 // Function for calling consoleMenu() from console if the user chooses to enter data from the keyboard
 void chooseInputMethod() {
-    std::cout << "Do you want to enter data from the keyboard or read from a text file? (keyboard/file): ";
+    std::cout << "\nDo you want to enter data from the keyboard or read from a text file? (keyboard/file): ";
     std::string inputMethod;
     std::cin >> inputMethod;
 
     if (inputMethod == "file") {
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         readFromFile();
     } else if (inputMethod == "keyboard") {
         consoleMenu();
     } else {
-        std::cerr << "Invalid input. Please enter 'keyboard' or 'file'.\n";
+        std::cerr << "\nInvalid input. Please enter 'keyboard' or 'file'.\n";
         chooseInputMethod();
     }
 }
@@ -359,13 +359,13 @@ void loadTickets() {
 void saveTickets() {
     std::ofstream outFile("tickets.bin", std::ios::binary | std::ios::trunc);
     if (!outFile) {
-        std::cerr << "Error: Unable to open tickets.bin for writing." << std::endl;
+        std::cerr << "\nUnable to open tickets.bin for writing." << std::endl;
         return;
     }
     for (const auto& ticket : tickets) {
         ticket.serialize(outFile);
         if (!outFile) {
-            std::cerr << "Error: Write to tickets.bin failed." << std::endl;
+            std::cerr << "\nWrite to tickets.bin failed." << std::endl;
             break;
         }
     }
@@ -388,9 +388,9 @@ void validateTicket() {
     }
 
     if (isValid) {
-        std::cout << "Ticket is valid. \n";
+        std::cout << "\nTicket is valid.";
     } else {
-        std::cout << "Ticket is not valid.\n";
+        std::cout << "\nTicket is not valid.";
     }
 }
 
@@ -398,9 +398,9 @@ int main(int argc, char* argv[]) {
     loadTickets();
 
     if (tickets.empty()) {
-        std::cout << "No existing tickets found. Starting fresh." << std::endl;
+        std::cout << "\nNo existing tickets found. Starting fresh." << std::endl;
     } else {
-        std::cout << "Loaded existing tickets." << std::endl;
+        std::cout << "\nLoaded existing tickets." << std::endl;
     }
 
     if (argc > 1) {  // Command line arguments

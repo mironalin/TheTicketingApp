@@ -3,6 +3,7 @@
 #include <cstring>
 #include <algorithm>
 #include <limits>
+#include <sstream>
 
 // Default constructor
 Location::Location() : name(nullptr), maxSeats(0), numRows(0), numZones(0), zoneCapacities(nullptr) {}
@@ -159,23 +160,39 @@ void Location::displayLocationDetails() const {
 
 // Input method for file processing
 void Location::readFromFile(std::istream& is) {
-    // Read data directly without prompts
-    std::string name;
-    if(!(is >> name)) {
-        std::cerr << "Error reading Location Name from file\n";
+    std::string line;
+
+    // Read Location Name
+    std::getline(is, line);
+    if (line.empty() || std::any_of(line.begin(), line.end(), ::isdigit)) {
+        std::cerr << "\nInvalid Location Name (should not be empty or contain digits)";
         return;
     }
-    setLocationName(name.c_str());
+    setLocationName(line.c_str());
 
-    if(!(is >> maxSeats >> numRows >> numZones) || maxSeats <= 0 || numZones <= 0 || numRows <= 0) {
-        std::cerr << "Error reading numeric values or invalid values provided for Maximum number of Seats, Rows, or Zones\n";
+    // Read maxSeats
+    if (!std::getline(is, line) || !(std::stringstream(line) >> maxSeats) || maxSeats <= 0) {
+        std::cerr << "\nInvalid value for the number of maximum seats";
         return;
     }
 
+    // Read numRows
+    if (!std::getline(is, line) || !(std::stringstream(line) >> numRows) || numRows <= 0) {
+        std::cerr << "\nInvalid value for the number of rows";
+        return;
+    }
+
+    // Read numZones
+    if (!std::getline(is, line) || !(std::stringstream(line) >> numZones) || numZones <= 0) {
+        std::cerr << "\nInvalid value for the number of zones";
+        return;
+    }
+
+    // Read Zone Capacities
     zoneCapacities = new int[numZones];
     for (int i = 0; i < numZones; ++i) {
-        if (!(is >> zoneCapacities[i]) || zoneCapacities[i] <= 0) {
-            std::cerr << "Error reading numeric values or invalid values provided for Zone Capacities\n";
+        if (!std::getline(is, line) || !(std::stringstream(line) >> zoneCapacities[i]) || zoneCapacities[i] <= 0) {
+            std::cerr << "\nInvalid value for Zone Capacities";
             delete[] zoneCapacities; // Clean up to avoid memory leaks
             return;
         }
