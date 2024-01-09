@@ -9,6 +9,14 @@ Ticket::Ticket() : ticketId(0), ticketType(nullptr) {}
 
 // Parameterized constructor
 Ticket::Ticket(const char* type) {
+    // Validate the input (type should not be empty)
+    if (type == nullptr || strlen(type) == 0) {
+        std::cerr << "Invalid ticket type. Please provide a non-empty type.\n";
+        ticketType = nullptr;
+        ticketId = 0;
+        return;
+    }
+
     // Allocate memory for ticketType and copy the input string
     ticketType = new char[strlen(type) + 1];
     strcpy(ticketType, type);
@@ -105,16 +113,27 @@ void Ticket::updateUniqueIdCounter(int lastId) {
     uniqueIdCounter = lastId;
 }
 
-// Serialize method
+// Serialize method with validation
 void Ticket::serialize(std::ofstream& out) const {
+    if (!out) {
+        std::cerr << "Output file stream is not in a good state.\n";
+        return;
+    }
     out.write(reinterpret_cast<const char*>(&ticketId), sizeof(ticketId));
     size_t length = strlen(ticketType);
     out.write(reinterpret_cast<const char*>(&length), sizeof(length));
     out.write(ticketType, length);
+    if (!out) {
+        std::cerr << "Failed to write to the output file stream.\n";
+    }
 }
 
-// Deserialize method
+// Deserialize method with validation
 void Ticket::deserialize(std::ifstream& in) {
+    if (!in) {
+        std::cerr << "Input file stream is not in a good state.\n";
+        return;
+    }
     in.read(reinterpret_cast<char*>(&ticketId), sizeof(ticketId));
     size_t length;
     in.read(reinterpret_cast<char*>(&length), sizeof(length));
@@ -122,4 +141,7 @@ void Ticket::deserialize(std::ifstream& in) {
     ticketType = new char[length + 1];
     in.read(ticketType, length);
     ticketType[length] = '\0';
+    if (!in) {
+        std::cerr << "Failed to read from the input file stream.\n";
+    }
 }
