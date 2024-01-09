@@ -23,6 +23,12 @@ public:
     // Copy assignment operator
     Event& operator=(const Event& other);
 
+    // Function to check if a date is valid
+    bool isValidDate(const char* date);
+
+    // Function to check if a time is valid
+    bool isValidTime(const char* time);
+
     // Accessors
     [[nodiscard]] const char* getEventName() const;
     [[nodiscard]] const char* getEventDate() const;

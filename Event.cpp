@@ -1,21 +1,40 @@
 #include "Event.h"
 #include <iostream>
 #include <cstring>
+#include <algorithm>
+#include <limits>
+#include <string>
+#include <cctype>
 
 // Default constructor
 Event::Event() : eventName(nullptr), eventDate(nullptr), eventTime(nullptr) {}
 
-// Parameterized constructor
+// Parameterized constructor with validations
 Event::Event(const char* name, const char* date, const char* time) {
     // Allocate memory for eventName, eventDate, and eventTime and copy the input strings
-    eventName = new char[strlen(name) + 1];
-    strcpy(eventName, name);
+    if (name == nullptr || strlen(name) == 0) {
+        std::cerr << "\nInvalid event name. Please provide a non-empty name.\n";
+        eventName = nullptr;
+    } else {
+        eventName = new char[strlen(name) + 1];
+        strcpy(eventName, name);
+    }
 
-    eventDate = new char[strlen(date) + 1];
-    strcpy(eventDate, date);
+    if (date == nullptr || strlen(date) == 0) {
+        std::cerr << "\nInvalid event date. Please provide a non-empty date.\n";
+        eventDate = nullptr;
+    } else {
+        eventDate = new char[strlen(date) + 1];
+        strcpy(eventDate, date);
+    }
 
-    eventTime = new char[strlen(time) + 1];
-    strcpy(eventTime, time);
+    if (time == nullptr || strlen(time) == 0) {
+        std::cerr << "\nInvalid event time. Please provide a non-empty time.\n";
+        eventTime = nullptr;
+    } else {
+        eventTime = new char[strlen(time) + 1];
+        strcpy(eventTime, time);
+    }
 }
 
 // Destructor
@@ -59,6 +78,44 @@ Event& Event::operator=(const Event& other) {
     return *this;
 }
 
+// Function to check if the date is valid
+bool Event::isValidDate(const char* date) {
+    // Check length for format DD.MM.YYYY
+    if (strlen(date) != 10) return false;
+    // Check for dots at the correct positions
+    if (date[2] != '.' || date[5] != '.') return false;
+
+    // Extract day, month, and year
+    int day = (date[0] - '0') * 10 + (date[1] - '0');
+    int month = (date[3] - '0') * 10 + (date[4] - '0');
+    int year = (date[6] - '0') * 1000 + (date[7] - '0') * 100 + (date[8] - '0') * 10 + (date[9] - '0');
+
+    // Basic checks for year, month, and day
+    if (year < 1000 || year > 9999) return false;
+    if (month < 1 || month > 12) return false;
+    if (day < 1 || day > 31) return false; // This is a simplified check and doesn't account for different days in each month
+
+    return true;
+}
+
+// Function to check if the time is valid
+bool Event::isValidTime(const char* time) {
+    // Check length for format HH:MM
+    if (strlen(time) != 5) return false;
+    // Check for colon at the correct position
+    if (time[2] != ':') return false;
+
+    // Extract hour and minute
+    int hour = (time[0] - '0') * 10 + (time[1] - '0');
+    int minute = (time[3] - '0') * 10 + (time[4] - '0');
+
+    // Basic checks for hour and minute
+    if (hour < 0 || hour > 23) return false;
+    if (minute < 0 || minute > 59) return false;
+
+    return true;
+}
+
 // Accessors
 const char* Event::getEventName() const {
     return eventName;
@@ -76,7 +133,7 @@ const char* Event::getEventTime() const {
 void Event::setEventName(const char* name) {
     // Validate the input (name should not be empty)
     if (name == nullptr || strlen(name) == 0) {
-        std::cerr << "Invalid event name. Please provide a non-empty name.\n";
+        std::cerr << "\nInvalid event name. Please provide a non-empty name.";
         return;
     }
 
@@ -91,7 +148,7 @@ void Event::setEventName(const char* name) {
 void Event::setEventDate(const char* date) {
     // Validate the input (date should not be empty)
     if (date == nullptr || strlen(date) == 0) {
-        std::cerr << "Invalid event date. Please provide a non-empty date.\n";
+        std::cerr << "\nInvalid event date. Please provide a date in DD.MM.YYYY format.";
         return;
     }
 
@@ -106,7 +163,7 @@ void Event::setEventDate(const char* date) {
 void Event::setEventTime(const char* time) {
     // Validate the input (time should not be empty)
     if (time == nullptr || strlen(time) == 0) {
-        std::cerr << "Invalid event time. Please provide a non-empty time.\n";
+        std::cerr << "\nInvalid event time. Please provide a time in HH:MM format.";
         return;
     }
 
@@ -147,21 +204,39 @@ std::ostream& operator<<(std::ostream& os, const Event& event) {
 }
 
 std::istream& operator>>(std::istream& is, Event& event) {
-    char buffer[100]; // Assuming a maximum length for input strings;
 
     std::cout << "\n========== Enter Event Details ==========\n";
 
     std::cout << "\nEnter Event Name: ";
-    is >> buffer;
-    event.setEventName(buffer);
+    std::string name;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the buffer
+    std::getline(is, name);
+    // Validate the input (name should not be empty and should not contain digits)
+    while (name.empty() || std::any_of(name.begin(), name.end(), ::isdigit)) {
+        std::cerr << "\nEvent Name should not be empty and should not contain digits. Please enter a valid name: ";
+        std::getline(is, name);
+    }
+    event.setEventName(name.c_str());
 
-    std::cout << "\nEnter Event Date: ";
-    is >> buffer;
-    event.setEventDate(buffer);
+    std::cout << "\nEnter Event Date (DD.MM.YYYY): ";
+    std::string date;
+    std::getline(is, date);
+    // Validate the input
+    while (!event.isValidDate(date.c_str())) {
+        std::cerr << "\nEvent Date should not be empty and should be in DD.MM.YYYY format. Please enter a valid date (DD.MM.YYYY): ";
+        std::getline(is, date);
+    }
+    event.setEventDate(date.c_str());
 
-    std::cout << "\nEnter Event Time: ";
-    is >> buffer;
-    event.setEventTime(buffer);
+    std::cout << "\nEnter Event Time (HH:MM): ";
+    std::string time;
+    std::getline(is, time);
+    // Validate the input
+    while (!event.isValidTime(time.c_str())) {
+        std::cerr << "\nEvent Time should not be empty and should be in HH:MM format. Please enter a valid time (HH:MM): ";
+        std::getline(is, time);
+    }
+    event.setEventTime(time.c_str());
 
     std::cout << "\n========== Event Details Entered ==========\n\n";
 

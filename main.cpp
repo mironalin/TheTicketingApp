@@ -283,6 +283,7 @@ void ticketGenerationMenu(Location& location) {
         std::cout << "2. Generate Movie Ticket\n";  // Placeholder for future implementation
         std::cout << "3. Generate Theater Ticket\n";  // Placeholder for future implementation
         std::cout << "4. Back to Main Menu\n";
+        std::cout << "========== TICKET GENERATION MENU ==========\n";
         std::cout << "Enter your choice: ";
         // Validate input
         while (!(std::cin >> choice) || choice < 1 || choice > 4) {

@@ -196,11 +196,13 @@ std::istream& operator>>(std::istream& is, Location& location) {
 
     std::cout << "\nEnter Location Name: ";
     std::string name;
-    // Validate the input (name should not be empty) and should not contain digits
-    is >> name;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the buffer
+    std::getline(is, name);
+
+    // Validate the input (name should not be empty and should not contain digits)
     while (name.empty() || std::any_of(name.begin(), name.end(), ::isdigit)) {
-        std::cerr << "Location Name should not be empty and should not contain digits. Please enter a valid name: ";
-        is >> name;
+        std::cerr << "\nLocation Name should not be empty and should not contain digits. Please enter a valid name: ";
+        std::getline(is, name);
     }
     location.setLocationName(name.c_str());
 
@@ -260,7 +262,7 @@ std::istream& operator>>(std::istream& is, Location& location) {
     for (int i = 0; i < numZones; ++i) {
         std::cout << "\nCapacity for Zone " << (i + 1) << ": ";
         while (!(is >> zoneCapacities[i]) || zoneCapacities[i] <= 0) {
-            std::cerr << "Invalid input for zone capacity. Please enter a positive integer: ";
+            std::cerr << "\nInvalid input for zone capacity. Please enter a positive integer: ";
             is.clear();
             is.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
