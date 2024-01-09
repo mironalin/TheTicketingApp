@@ -16,7 +16,9 @@ Location::Location(const char* n, int max, int rows, int zones, int* capacities)
     for (int i = 0; i < numZones; ++i) {
         zoneCapacities[i] = capacities[i];
     }
+
 }
+
 
 // Destructor
 Location::~Location() {
@@ -212,9 +214,45 @@ std::istream& operator>>(std::istream& is, Location& location) {
     return is;
 }
 
+// Deprecated method
 void Location::decrementZoneCapacity(int zoneIndex) {
     if (zoneIndex >= 0 && zoneIndex < numZones) {
         --zoneCapacities[zoneIndex];
+    }
+}
+
+// New method to initialize seat layout
+void Location::initializeSeats() {
+    seats.resize(numZones);
+    for (int z = 0; z < numZones; ++z) {
+        seats[z].resize(numRows);
+        for (int r = 0; r < numRows; ++r) {
+            seats[z][r].resize(zoneCapacities[z] / numRows, true); // Assuming equal distribution of seats per row
+        }
+    }
+}
+
+// New method to find the first available seat
+std::pair<int, int> Location::findAvailableSeat(int zone, int row) {
+    // Subtract 1 to convert to 0-based indexing
+    zone--;
+    row--;
+    for (size_t seat = 0; seat < seats[zone][row].size(); ++seat) {
+        if (seats[zone][row][seat]) {
+            return {row + 1, seat + 1}; // Convert back to 1-based indexing for user
+        }
+    }
+    return {-1, -1}; // Indicate no available seat
+}
+
+// New method to allocate a seat
+void Location::allocateSeat(int zone, int row, int seatNumber) {
+    // Subtract 1 to convert to 0-based indexing
+    zone--;
+    row--;
+    seatNumber--;
+    if (zone >= 0 && zone < numZones && row >= 0 && row < numRows && seatNumber >= 0 && seatNumber < seats[zone][row].size()) {
+        seats[zone][row][seatNumber] = false;
     }
 }
 

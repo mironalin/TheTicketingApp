@@ -12,6 +12,8 @@ private:
     int numZones;
     int* zoneCapacities;
 
+    //NEW
+    std::vector<std::vector<std::vector<bool>>> seats; // 3D vector: [zone][row][seat]
 public:
     // Default constructor
     Location();
@@ -51,6 +53,16 @@ public:
     friend std::istream& operator>>(std::istream& is, Location& location);
 
     void decrementZoneCapacity(int zoneIndex);
+
+    // New method to initialize seat layout
+    void initializeSeats();
+
+    // New method to find the first available seat
+    std::pair<int, int> findAvailableSeat(int zone, int row);
+
+    // New method to allocate a seat
+    void allocateSeat(int zone, int row, int seatNumber);
+
 };
 
 #endif //THETICKETINGAPP_LOCATION_H

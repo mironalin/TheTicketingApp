@@ -25,6 +25,9 @@ void initLocAndEvent(Location& location, Event& event) {
     // User input for Location
     std::cin >> location;
 
+    //new
+    location.initializeSeats(); // Initialize the seating layout
+
     // User input for Event
     std::cin >> event;
 
@@ -100,71 +103,67 @@ void processFile(const std::string& fileName) {
 
     file.close();
 }
+// Ticket generation menu separated from consoleMenu
+void ticketGenerationMenu(Location& location) {
+    int choice;
+    do {
+        std::cout << "\n========== TICKET GENERATION MENU ==========\n";
+        std::cout << "1. Generate Football Ticket\n";
+        std::cout << "2. Generate Movie Ticket\n";  // Placeholder for future implementation
+        std::cout << "3. Generate Theater Ticket\n";  // Placeholder for future implementation
+        std::cout << "4. Back to Main Menu\n";
+        std::cout << "Enter your choice: ";
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1:
+                generateFootballTicket(location);
+                break;
+            case 2:
+                // Placeholder for generating movie ticket
+                break;
+            case 3:
+                // Placeholder for generating theater ticket
+                break;
+            case 4:
+                std::cout << "Returning to main menu.\n";
+                break;
+            default:
+                std::cout << "Invalid choice. Please try again.\n";
+        }
+    } while (choice != 4);
+}
+
 // Function for console menu
 void consoleMenu() {
     Location location;
     Event event;
-    int choice_1;
-    // Menu-driven options
+    int choice;
     do {
-        std::cout << "\n========== MENU ==========";
-        std::cout << "\n1. Enter Ticket Details \n";
-        std::cout << "2. Validate Ticket \n";
-        std::cout << "3. Exit \n";
-        std::cout << "========== MENU ==========\n";
-        std::cin >> choice_1;
+        std::cout << "\n========== MAIN MENU ==========\n";
+        std::cout << "1. Enter Ticket Details\n";
+        std::cout << "2. Validate Ticket\n";
+        std::cout << "3. Exit\n";
+        std::cout << "Enter your choice: ";
+        std::cin >> choice;
 
-        switch (choice_1) {
-            case 1: {  // Enter Ticket Details
-                // Initialize Location and Event
+        switch (choice) {
+            case 1:
                 initLocAndEvent(location, event);
-
-                int choice_2;
-                std::cout << "\n========== MENU ==========";
-                std::cout << "\n1. Generate Football Ticket \n";
-                std::cout << "2. Generate Movie Ticket \n";
-                std::cout << "3. Generate Theater Ticket \n";
-                std::cout << "4. Exit \n";
-                std::cout << "========== MENU ==========\n";
-                std::cout << "\nEnter your choice: ";
-                std::cin >> choice_2;
-
-                switch (choice_2) {
-                    case 1: {  // Football Ticket
-                        generateFootballTicket(location);
-                        break;
-                    }
-                    case 2: {  // Movie Ticket --> Normal or VIP
-                        break;
-                    }
-                    case 3: {  // Theater Ticket --> Category 1, 2 or Box
-                        break;
-                    }
-                    case 4: {  // Exit
-                        std::cout << "\nExiting the program.\n";
-                        break;
-                    }
-                    default: {  // Invalid choice
-                        std::cout << "Invalid choice. Please try again.\n";
-                    }
-                }
-            }
-            case 2: {  // Validate Ticket
+                ticketGenerationMenu(location);
+                break;
+            case 2:
                 validateTicket();
                 break;
-            }
-            case 3: {  // Exit
+            case 3:
                 std::cout << "\nExiting the program.\n";
                 break;
-            }
-            default: {  // Invalid choice
+            default:
                 std::cout << "Invalid choice. Please try again.\n";
-            }
-            
         }
-    } while (choice_1 != 3);
-
+    } while (choice != 3);
 }
+
 
 // Function for calling processFile() from console if the user chooses to read from a file
 void readFromFile() {
