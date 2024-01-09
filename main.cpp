@@ -2,6 +2,7 @@
 #include "Event.h"
 #include "Ticket.h"
 #include "FootballTicket.h"
+#include "CinemaTicket.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -12,12 +13,14 @@ std::vector<Ticket> tickets;
 // Function prototype
 void initLocAndEvent(Location& location, Event& event);
 void generateFootballTicket(Location& location);
+void generateCinemaTicket(Location& location);
 void validateTicket();
 void processFile(const std::string& fileName);
 void consoleMenu();
 void readFromFile();
 void loadTickets();
 void saveTickets();
+void ticketGenerationMenu(Location& location);
 
 // Function for initializing Location and Event
 void initLocAndEvent(Location& location, Event& event) {
@@ -43,13 +46,45 @@ void initLocAndEvent(Location& location, Event& event) {
 // Function to generate a football ticket
 void generateFootballTicket(Location& location) {
     int zone, row;
-    std::cout << "\nEnter Zone and Row for the football ticket: ";
-    std::cin >> zone >> row;
+    std::cout << "\n========== Football Ticket Menu ==========\n";
+    std::cout << "1. Stand: ";
+    std::cin >> zone;
+    std::cout << "2. Stand: ";
+    std::cin >> row;
+    std::cout << "\n========== Football Ticket Menu ==========\n";
 
     FootballTicket footballTicket("Football", zone, row);
     if (footballTicket.findAndAllocateSeat(location)) {
         footballTicket.displayTicketDetails();
         tickets.push_back(footballTicket);
+    } else {
+        std::cout << "No available seats in the specified zone and row." << std::endl;
+    }
+}
+
+// Function to generate a movie ticket
+void generateCinemaTicket(Location& location) {
+    int choice, zone, row;
+    std::cout << "\n========== Cinema Ticket Menu ==========\n";
+    std::cout << "1. Normal Ticket\n";
+    std::cout << "2. VIP Ticket\n";
+    std::cout << "========== Cinema Ticket Menu ==========\n";
+
+    std::cout << "Enter your choice: ";
+    std::cin >> choice;
+    std::cout << "Area: ";
+    std::cin >> zone;
+    std::cout << "Row: ";
+    std::cin >> row;
+    std::cout << "\n========== Cinema Ticket Menu ==========\n";
+
+
+    std::string ticketType = (choice == 1) ? "Normal Cinema " : "VIP Cinema";
+
+    CinemaTicket cinemaTicket(ticketType.c_str(), zone, row);
+    if (cinemaTicket.findAndAllocateSeat(location)) {
+        cinemaTicket.displayTicketDetails();
+        tickets.push_back(cinemaTicket);
     } else {
         std::cout << "No available seats in the specified zone and row." << std::endl;
     }
@@ -62,76 +97,47 @@ void processFile(const std::string& fileName) {
         std::cerr << "Error opening file: " << fileName << std::endl;
         return;
     }
-
     Location location;
     Event event;
+
+    int choice;
 
     // Process Location and Event from file
     location.readFromFile(file);
     event.readFromFile(file);
 
+    // Initialize the seating layout
+    location.initializeSeats();
+
     // Display details
     location.displayLocationDetails();
     event.displayEventDetails();
 
-    // Process Tickets from file
-    int ticketChoice;
-    while (file >> ticketChoice) {
-        switch (ticketChoice) {
-            case 1: {
-                //generateTicketOfType("Normal");
-                break;
-            }
-            case 2: {
-                //generateTicketOfType("VIP");
-                break;
-            }
-            case 3: {
-                // Validate Ticket
-                validateTicket();
-                break;
-            }
-            case 4: {
-                std::cout << "\nExiting the program.\n";
-                break;
-            }
-            default: {
-                std::cout << "Invalid choice. Please try again.\n";
-            }
-        }
-    }
-
-    file.close();
-}
-// Ticket generation menu separated from consoleMenu
-void ticketGenerationMenu(Location& location) {
-    int choice;
     do {
-        std::cout << "\n========== TICKET GENERATION MENU ==========\n";
-        std::cout << "1. Generate Football Ticket\n";
-        std::cout << "2. Generate Movie Ticket\n";  // Placeholder for future implementation
-        std::cout << "3. Generate Theater Ticket\n";  // Placeholder for future implementation
-        std::cout << "4. Back to Main Menu\n";
+        std::cout << "\n========== MAIN MENU ==========\n";
+        std::cout << "1. Ticket Generation Menu\n";
+        std::cout << "2. Validate Ticket\n";
+        std::cout << "3. Exit\n";
+        std::cout << "========== MAIN MENU ==========\n";
         std::cout << "Enter your choice: ";
         std::cin >> choice;
 
         switch (choice) {
             case 1:
-                generateFootballTicket(location);
+                ticketGenerationMenu(location);
                 break;
             case 2:
-                // Placeholder for generating movie ticket
+                validateTicket();
                 break;
             case 3:
-                // Placeholder for generating theater ticket
-                break;
-            case 4:
-                std::cout << "Returning to main menu.\n";
+                std::cout << "\nExiting the program.\n";
                 break;
             default:
                 std::cout << "Invalid choice. Please try again.\n";
         }
-    } while (choice != 4);
+    } while (choice != 3);
+
+    file.close();
 }
 
 // Function for console menu
@@ -144,6 +150,7 @@ void consoleMenu() {
         std::cout << "1. Enter Ticket Details\n";
         std::cout << "2. Validate Ticket\n";
         std::cout << "3. Exit\n";
+        std::cout << "========== MAIN MENU ==========\n";
         std::cout << "Enter your choice: ";
         std::cin >> choice;
 
@@ -164,6 +171,36 @@ void consoleMenu() {
     } while (choice != 3);
 }
 
+// Ticket generation menu separated from consoleMenu
+void ticketGenerationMenu(Location& location) {
+    int choice;
+    do {
+        std::cout << "\n========== TICKET GENERATION MENU ==========\n";
+        std::cout << "1. Generate Football Ticket\n";
+        std::cout << "2. Generate Movie Ticket\n";  // Placeholder for future implementation
+        std::cout << "3. Generate Theater Ticket\n";  // Placeholder for future implementation
+        std::cout << "4. Back to Main Menu\n";
+        std::cout << "Enter your choice: ";
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1:
+                generateFootballTicket(location);
+                break;
+            case 2:
+                generateCinemaTicket(location);
+                break;
+            case 3:
+                // Placeholder for generating theater ticket
+                break;
+            case 4:
+                std::cout << "Returning to main menu.\n";
+                break;
+            default:
+                std::cout << "Invalid choice. Please try again.\n";
+        }
+    } while (choice != 4);
+}
 
 // Function for calling processFile() from console if the user chooses to read from a file
 void readFromFile() {

@@ -1,20 +1,19 @@
-#ifndef THETICKETINGAPP_FOOTBALLTICKET_H
-#define THETICKETINGAPP_FOOTBALLTICKET_H
+#ifndef THETICKETINGAPP_CINEMATICKET_H
+#define THETICKETINGAPP_CINEMATICKET_H
 
 #include "Ticket.h"
 #include "Location.h"
 
-class FootballTicket : public Ticket {
+class CinemaTicket : public Ticket {
 private:
     int zone;
     int row;
 
     int seatNumber;  // Add a member variable for seat number
-
 public:
     // Constructors
-    FootballTicket();
-    FootballTicket(const char* type, int zone, int row);
+    CinemaTicket();
+    CinemaTicket(const char* type, int zone, int row);
 
     // Accessors
     int getZone() const;
@@ -31,4 +30,4 @@ public:
     virtual void deserialize(std::ifstream& in);
 };
 
-#endif //THETICKETINGAPP_FOOTBALLTICKET_H
+#endif //THETICKETINGAPP_CINEMATICKET_H
