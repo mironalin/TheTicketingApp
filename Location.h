@@ -1,11 +1,8 @@
-//
-// Created by alinm on 11/17/2023.
-//
-
 #ifndef THETICKETINGAPP_LOCATION_H
 #define THETICKETINGAPP_LOCATION_H
 
 #include <iostream>
+#include <vector>
 
 class Location {
 private:
@@ -52,6 +49,8 @@ public:
     // Operator overloads
     friend std::ostream& operator<<(std::ostream& os, const Location& location);
     friend std::istream& operator>>(std::istream& is, Location& location);
+
+    void decrementZoneCapacity(int zoneIndex);
 };
 
 #endif //THETICKETINGAPP_LOCATION_H

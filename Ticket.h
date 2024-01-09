@@ -1,7 +1,3 @@
-//
-// Created by alinm on 11/17/2023.
-//
-
 #ifndef THETICKETINGAPP_TICKET_H
 #define THETICKETINGAPP_TICKET_H
 
@@ -34,7 +30,7 @@ public:
 
     // Other processing methods
     void generateTicketId();
-    void displayTicketDetails() const;
+    virtual void displayTicketDetails() const;
 
     // Setters with validations
     void setTicketType(const char* type);

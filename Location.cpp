@@ -212,4 +212,11 @@ std::istream& operator>>(std::istream& is, Location& location) {
     return is;
 }
 
+void Location::decrementZoneCapacity(int zoneIndex) {
+    if (zoneIndex >= 0 && zoneIndex < numZones) {
+        --zoneCapacities[zoneIndex];
+    }
+}
+
+
 
