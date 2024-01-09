@@ -3,6 +3,7 @@
 #include "Ticket.h"
 #include "FootballTicket.h"
 #include "CinemaTicket.h"
+#include "TheaterTicket.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -14,6 +15,7 @@ std::vector<Ticket> tickets;
 void initLocAndEvent(Location& location, Event& event);
 void generateFootballTicket(Location& location);
 void generateCinemaTicket(Location& location);
+void generateTheaterTicket(Location& location);
 void validateTicket();
 void processFile(const std::string& fileName);
 void consoleMenu();
@@ -53,7 +55,7 @@ void generateFootballTicket(Location& location) {
     std::cin >> row;
     std::cout << "\n========== Football Ticket Menu ==========\n";
 
-    FootballTicket footballTicket("Football", zone, row);
+    FootballTicket footballTicket("Football Ticket", zone, row);
     if (footballTicket.findAndAllocateSeat(location)) {
         footballTicket.displayTicketDetails();
         tickets.push_back(footballTicket);
@@ -79,12 +81,47 @@ void generateCinemaTicket(Location& location) {
     std::cout << "\n========== Cinema Ticket Menu ==========\n";
 
 
-    std::string ticketType = (choice == 1) ? "Normal Cinema " : "VIP Cinema";
+    std::string ticketType = (choice == 1) ? "Normal Cinema Ticket " : "VIP Cinema Ticket";
 
     CinemaTicket cinemaTicket(ticketType.c_str(), zone, row);
     if (cinemaTicket.findAndAllocateSeat(location)) {
         cinemaTicket.displayTicketDetails();
         tickets.push_back(cinemaTicket);
+    } else {
+        std::cout << "No available seats in the specified zone and row." << std::endl;
+    }
+}
+
+// Function to generate a theater ticket
+void generateTheaterTicket(Location& location) {
+    int choice, zone, row;
+    std::cout << "\n========== Theater Ticket Menu ==========\n";
+    std::cout << "1. Category 1 Ticket\n";
+    std::cout << "2. Category 2 Ticket\n";
+    std::cout << "3. Box Ticket\n";
+    std::cout << "========== Theater Ticket Menu ==========\n";
+
+    std::cout << "Enter your choice: ";
+    std::cin >> choice;
+    std::cout << "Area: ";
+    std::cin >> zone;
+    std::cout << "Row: ";
+    std::cin >> row;
+    std::cout << "\n========== Cinema Ticket Menu ==========\n";
+
+    std::string ticketType;
+    if (choice == 1) {
+        ticketType = "Category 1 Theater Ticket";
+    } else if (choice == 2) {
+        ticketType = "Category 2 Theater Ticket";
+    } else {
+        ticketType = "Box Theater Ticket";
+    }
+
+    TheaterTicket theaterTicket(ticketType.c_str(), zone, row);
+    if (theaterTicket.findAndAllocateSeat(location)) {
+        theaterTicket.displayTicketDetails();
+        tickets.push_back(theaterTicket);
     } else {
         std::cout << "No available seats in the specified zone and row." << std::endl;
     }
@@ -191,7 +228,7 @@ void ticketGenerationMenu(Location& location) {
                 generateCinemaTicket(location);
                 break;
             case 3:
-                // Placeholder for generating theater ticket
+                generateTheaterTicket(location);
                 break;
             case 4:
                 std::cout << "Returning to main menu.\n";
